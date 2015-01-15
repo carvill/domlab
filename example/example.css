@@ -1,0 +1,94 @@
+
+@charset "US-ASCII";
+* {
+    color: #454545;
+    float: left;
+    font-family: Roboto,Helvetica,sans-serif;
+    font-style: normal;
+    font-weight: 300;
+}
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    margin: 0 0 10px;
+    width: 100%;
+}
+.content {
+    border-color: #edc918;
+    border-style: dashed;
+    border-width: 2px 0;
+    display: table;
+    float: none;
+    margin: 50px auto;
+    padding: 30px 0;
+    width: 70%;
+}
+.users {
+    width: 100%;
+}
+ol.user {
+    list-style: outside none none;
+    margin: 0 0 30px;
+    padding: 0;
+    width: 100%;
+}
+ol.user li {
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0 20px;
+    width: 100%;
+}
+ol.user li strong {
+    font-size: 20px;
+    line-height: 30px;
+    width: 70%;
+}
+ol.user li span {
+    float: right;
+    line-height: 30px;
+    text-align: right;
+    width: 25%;
+}
+ul.hobbie {
+    clear: left;
+    margin: 10px 0;
+    width: 200px;
+}
+ul.hobbie li {
+    border: medium none;
+    padding: 0 0 2px;
+    width: 100%;
+}
+ul.hobbie li a {
+    color: #999;
+    float: none;
+    margin-left: 20px;
+    text-decoration: none;
+}
+ul.hobbie li a:hover {
+    color: blue;
+}
+a.button {
+    background-color: #ddb608;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    float: right;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 18px;
+    padding: 10px 20px;
+    text-align: center;
+}
+a.button i {
+    color: inherit;
+    font-size: 30px;
+    margin-right: 10px;
+}
+a.button:hover {
+    background-color: #edc918;
+}
