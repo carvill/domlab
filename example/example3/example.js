@@ -85,5 +85,20 @@
 		return this;
 	};
 
+	$.button = function(text, clazz, icon, events) {
+		return {
+			'tag' : 'a',
+			'class' : 'button ' + clazz,
+			'text' : text,
+			'prepend' : [
+				{
+					'tag' : 'i',
+					'class' : ('fa ' + icon)
+				}
+			],
+			'events' : events
+		};
+	};
+
 
 })(jQuery);

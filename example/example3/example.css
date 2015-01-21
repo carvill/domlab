@@ -26,8 +26,11 @@ a.button {
     -moz-border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
     color: #fff;
-    padding: 5px 20px;
-    margin-right: 10px;
+    padding: 10px 20px;
+    margin: 0 10px 10px 0;
+}
+a.button.blue {
+    background-color: #2B59E2;
 }
 a.button i {
     line-height: 22px;
@@ -154,8 +157,17 @@ p {
 .c2 {
     width: 50%;
 }
+.c23 {
+    width: 66%;
+}
 .c3 {
     width: 33%;
+}
+.c34 {
+    width: 75%;
+}
+.c4 {
+    width: 25%;
 }
 .c3.md {
     width: 34%;
@@ -166,11 +178,14 @@ p {
 .mtp {
     margin-top: 30px;
 }
+.mtb {
+    margin-bottom: 30px;
+}
 .box {
     background-color: #fff;
     border: 2px solid #ddd;
-    height: 96px;
-    width: 96px;
+    height: 66px;
+    width: 66px;
 }
 .box.start {
     background-color: #008000;
@@ -178,6 +193,62 @@ p {
 .box.bussy {
     background-color: #000;
 }
+.box.bussy.error {
+    border-color: #f00;
+}
 .box.exit {
     background-color: #2b59e2;
+}
+.box.exit.complete {
+    border-color: #EAEA20;
+}
+.box.current {
+    background-color: #EAEA20;
+    -webkit-animation: animar 5s;
+    animation: animar 5s;
+}
+
+@-webkit-keyframes animar {
+    from {
+        background-color: #fff;
+    }
+    to {
+        background-color: #EAEA20;
+    }
+}
+@keyframes animar {
+    from {
+        background-color: #fff;
+    }
+    to {
+        background-color: #EAEA20;
+    }
+} 
+
+
+.sheet {
+    border: 1px solid #ccc;
+    margin-right: 50px;
+    min-height: 350px;
+    width: 430px;
+}
+.sht-itm {
+    border-bottom: 1px solid #f1f1f1;
+    padding: 10px 0;
+    width: 100%;
+}
+.sht-itm * {
+    color: #2b59e2;
+    line-height: 20px;
+}
+.sht-itm.error * {
+    color: #f00;
+}
+.sht-itm i.icn {
+    margin: 0 10px 0 20px;
+}
+.sht-itm i.close {
+    color: #f00;
+    margin: 0 20px 0 0;
+    cursor: pointer;
 }
