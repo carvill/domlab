@@ -3,97 +3,152 @@
 	
 	$.fn.boycoder = function() {
 		var $this = $(this),
-			arrow = function arrow(dir) {
-				var txt = '';
-				switch(dir) {
+		arrow = function arrow(dir) {
+			var txt = '';
+			switch(dir) {
+				case 'up':
+					txt = 'moveUp();';
+					break;
+				case 'down':
+					txt = 'moveDown();';
+					break;
+				case 'left':
+					txt = 'moveLeft();';
+					break;
+				case 'right':
+					txt = 'moveRight();';
+					break;
+			};
+
+			$.domlab({
+				'tag' : 'div',
+				'class' : 'sht-itm',
+				'attr' : {
+					'dir' : dir
+				},
+				'append' : [
+					{
+						'tag' : 'i',
+						'class' : ('fa fa-arrow-' + dir + ' icn')
+					},
+					{
+						'tag' : 'span',
+						'text' : txt
+					},
+					{
+						'tag' : 'i',
+						'class' : ('fa fa-times-circle close rg'),
+						'events' : {
+							'click' : function(e) {
+								$(this).parent().remove();
+							}
+						}
+					}
+				]
+			}, {
+				'container' : $this.dom('sheet')
+			});
+		},
+		run = function run() {
+			if ($this.dom('sheet').children().length == 0) {
+				alert('Haz click en los botones azules para generar las instrucciones que moverán el cuadro verde.');
+				return;
+			}
+
+			var x = 0, y = 0, $elem, $cas;
+			$this.dom('run-table').children().removeClass('current').removeClass('error').removeClass('complete');
+			$.each($this.dom('sheet').children(), function(i, el) {
+				$elem = $(el);
+				$elem.removeClass('error');
+				switch($elem.attr('dir')) {
 					case 'up':
-						txt = 'moveUp();';
+						--y;
 						break;
 					case 'down':
-						txt = 'moveDown();';
+						++y;
 						break;
 					case 'left':
-						txt = 'moveLeft();';
+						--x;
 						break;
 					case 'right':
-						txt = 'moveRight();';
+						++x;
 						break;
 				};
 
-				$this.dom('sheet').domlab({
-					'tag' : 'div',
-					'class' : 'sht-itm',
-					'attr' : {
-						'dir' : dir
-					},
-					'append' : [
-						{
-							'tag' : 'i',
-							'class' : ('fa fa-arrow-' + dir + ' icn')
-						},
-						{
-							'tag' : 'span',
-							'text' : txt
-						},
-						{
-							'tag' : 'i',
-							'class' : ('fa fa-times-circle close rg'),
-							'events' : {
-								'click' : function(e) {
-									$(this).parent().remove();
-								}
-							}
-						}
-					]
-				});
-			},
-			run = function run() {
-				if ($this.dom('sheet').children().length == 0) {
-					alert('Haz click en los botones azules para generar las instrucciones que moverán el cuadro verde.');
-					return;
+				$cas = $this.dom('run-table').find('div[x="' + x + '"][y="' + y + '"]').eq(0);
+				if ($cas.length == 0) {
+					$elem.addClass('error');
+					alert('Has salido de los límites');
+					return false;
 				}
 
-				var x = 0, y = 0, $elem, $cas;
-				$this.dom('run-table').children().removeClass('current').removeClass('error').removeClass('complete');
-				$.each($this.dom('sheet').children(), function(i, el) {
-					$elem = $(el);
-					$elem.removeClass('error');
-					switch($elem.attr('dir')) {
-						case 'up':
-							--y;
-							break;
-						case 'down':
-							++y;
-							break;
-						case 'left':
-							--x;
-							break;
-						case 'right':
-							++x;
-							break;
-					};
+				if ($cas.hasClass('bussy')) {
+					$cas.addClass('error');
+					$elem.addClass('error');
+					alert('Error de compilación');
+					return false;
+				} else if ($cas.hasClass('exit')) {
+					$cas.addClass('complete');
+					alert('Felicidades! Has llegado a la meta en ' + (i + 1) + ' movimientos');
+					return false;
+				} else {
+					$cas.addClass('current');
+				}
+			});
+		},
+		board = {
+			'tag' : 'div',
+			'class' : 'c1 run',
+			'key' : 'run-table',
+			'append' : [
+				{
+					'type' : 'iterator',
+					'datasource' : function(success) {
+						var cntnt = [], l = 5, i = 0, j = 0, t = 0, itm = {};
+						for (j = 0; j < l; j++) {
+							for (i = 0; i < l; i++) {
+								itm = {
+									'x' : i,
+									'y' : j
+								}
+								if (i === 0 && j === 0) {
+									itm['start'] = true;
+								} else if (i === 4 && j === 4) {
+									itm['exit'] = true;
+								} else if (Math.floor((Math.random() * 10) + 1) < 4 && t < l) {
+									t++;
+									itm['free'] = false;
+								} else {
+									itm['free'] = true;
+								}
+								cntnt.push(itm);
+							}
+						}
+						success(cntnt);
+					},
+					'filler' : function(index, item) {
+						var itm = {
+							'tag' : 'div',
+							'class' : 'box',
+							'attr' : {
+								'x' : item['x'],
+								'y' : item['y']
+							}
+						};
 
-					$cas = $this.dom('run-table').find('div[x="' + x + '"][y="' + y + '"]').eq(0);
-					if ($cas.length == 0) {
-						$elem.addClass('error');
-						alert('Has salido de los límites');
-						return false;
-					}
+						if (item['start']) {
+							itm['class'] = itm['class'] + ' start';
+						} else if (item['exit']) {
+							itm['class'] = itm['class'] + ' exit';
+						} else if (!item['free']) {
+							itm['class'] = itm['class'] + ' bussy';
+						}
 
-					if ($cas.hasClass('bussy')) {
-						$cas.addClass('error');
-						$elem.addClass('error');
-						alert('Error de compilación');
-						return false;
-					} else if ($cas.hasClass('exit')) {
-						$cas.addClass('complete');
-						alert('Felicidades! Has llegado a la meta en ' + (i + 1) + ' movimientos');
-						return false;
-					} else {
-						$cas.addClass('current');
+						return itm;
 					}
-				});
-			};
+				}
+			]
+		};
 		
 		$this.webapp({
 			'logo' : {
@@ -204,7 +259,7 @@
 													'click' : function(e) {
 														e.preventDefault();
 														$this.dom('sheet').empty();
-														$this.repaint('run-table');
+														$this.repaint('run-table', board['append'], board['prepend']);
 													}
 												})
 											]
@@ -236,61 +291,7 @@
 										{
 											'tag' : 'h4',
 											'text' : 'Comprueba el resultado'
-										},
-										{
-											'tag' : 'div',
-											'class' : 'c1 run',
-											'key' : 'run-table',
-											'keep' : true,
-											'append' : [
-												{
-													'type' : 'iterator',
-													'datasource' : function(success) {
-														var cntnt = [], l = 5, i = 0, j = 0, t = 0, itm = {};
-														for (j = 0; j < l; j++) {
-															for (i = 0; i < l; i++) {
-																itm = {
-																	'x' : i,
-																	'y' : j
-																}
-																if (i === 0 && j === 0) {
-																	itm['start'] = true;
-																} else if (i === 4 && j === 4) {
-																	itm['exit'] = true;
-																} else if (Math.floor((Math.random() * 10) + 1) < 4 && t < l) {
-																	t++;
-																	itm['free'] = false;
-																} else {
-																	itm['free'] = true;
-																}
-																cntnt.push(itm);
-															}
-														}
-														success(cntnt);
-													},
-													'filler' : function(index, item) {
-														var itm = {
-															'tag' : 'div',
-															'class' : 'box',
-															'attr' : {
-																'x' : item['x'],
-																'y' : item['y']
-															}
-														};
-
-														if (item['start']) {
-															itm['class'] = itm['class'] + ' start';
-														} else if (item['exit']) {
-															itm['class'] = itm['class'] + ' exit';
-														} else if (!item['free']) {
-															itm['class'] = itm['class'] + ' bussy';
-														}
-
-														return itm;
-													}
-												}
-											]
-										}
+										}, board
 									]
 								}
 							]
