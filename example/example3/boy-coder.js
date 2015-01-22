@@ -7,16 +7,16 @@
 				var txt = '';
 				switch(dir) {
 					case 'up':
-						txt = 'Mover arriba';
+						txt = 'moveUp();';
 						break;
 					case 'down':
-						txt = 'Mover abajo';
+						txt = 'moveDown();';
 						break;
 					case 'left':
-						txt = 'Mover a la izquierda';
+						txt = 'moveLeft();';
 						break;
 					case 'right':
-						txt = 'Mover a la derecha';
+						txt = 'moveRight();';
 						break;
 				};
 
@@ -48,6 +48,11 @@
 				});
 			},
 			run = function run() {
+				if ($this.dom('sheet').children().length == 0) {
+					alert('Haz click en los botones azules para generar las instrucciones que moverán el cuadro verde.');
+					return;
+				}
+
 				var x = 0, y = 0, $elem, $cas;
 				$this.dom('run-table').children().removeClass('current').removeClass('error').removeClass('complete');
 				$.each($this.dom('sheet').children(), function(i, el) {
@@ -78,7 +83,7 @@
 					if ($cas.hasClass('bussy')) {
 						$cas.addClass('error');
 						$elem.addClass('error');
-						alert('Error: la casilla no puede ser utilizada');
+						alert('Error de compilación');
 						return false;
 					} else if ($cas.hasClass('exit')) {
 						$cas.addClass('complete');
@@ -118,7 +123,11 @@
 								},
 								{
 									'tag' : 'p',
-									'text' : 'Las instrucciones son simples, sólo coloca el cuadro verde en el mismo lugar donde se encuentra actualmente el cuadro azul. Para lograrlo deberás ingresar las instrucciones a seguir disponibles.'
+									'text' : 'Coloca el cuadro verde en el mismo lugar donde se encuentra actualmente el cuadro azul. Utiliza los botones azules para generar el código con el que lograrás llevar el cuadro verde a lugar donde está el azul.'
+								},
+								{
+									'tag' : 'p',
+									'text' : 'Evita que alguna de las instrucciones provoque que el cuadro verde salga de los límites o que intente ocupar el lugar de algún cuadro negro.'
 								}
 							]
 						},
@@ -198,6 +207,24 @@
 														$this.repaint('run-table');
 													}
 												})
+											]
+										},
+										{
+											'tag' : 'div',
+											'class' : 'c1 mtp',
+											'append' : [
+												{
+													'tag' : 'h6',
+													'html' : '<strong>Correr:</strong>&nbsp;ejecuta las instrucciones que has puesto en tu código'
+												},
+												{
+													'tag' : 'h6',
+													'html' : '<strong>Borrar:</strong>&nbsp;borra todas las instrucciones de tu código'
+												},
+												{
+													'tag' : 'h6',
+													'html' : '<strong>Recargar reto:</strong>&nbsp;para solicitar otra disposición de cuadros en el reto'
+												}
 											]
 										}
 									]

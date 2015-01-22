@@ -63,7 +63,7 @@ p {
 .upper {
     text-transform: uppercase;
 }
-.hght {
+strong, .hght {
     color: #79BBEA;
     font-weight: 400;
 }
