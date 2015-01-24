@@ -3,6 +3,12 @@
 	
 	$.fn.boycoder = function() {
 		var $this = $(this),
+		buttons = {
+			'up': 'Arriba',
+			'down' : 'Abajo',
+			'left' : 'Izquierda',
+			'right': 'Derecha'
+		},
 		arrow = function arrow(dir) {
 			var txt = '';
 			switch(dir) {
@@ -211,30 +217,20 @@
 													'tag' : 'div',
 													'class' : 'c4',
 													'append' : [
-														$.button('Arriba', 'blue', 'fa-arrow-up', {
-															'click' : function(e) {
-																e.preventDefault();
-																arrow('up');
+														{
+															'type' : 'iterator',
+															'datasource' : function(success) {
+																success(['up', 'down', 'left', 'right']);
+															},
+															'filler' : function(index, item) {
+																return $.button(buttons[item], 'blue', ('fa-arrow-' + item), {
+																	'click' : function(e) {
+																		e.preventDefault();
+																		arrow(item);
+																	}
+																});
 															}
-														}),
-														$.button('Abajo', 'blue', 'fa-arrow-down', {
-															'click' : function(e) {
-																e.preventDefault();
-																arrow('down');
-															}
-														}),
-														$.button('Izquierda', 'blue', 'fa-arrow-left', {
-															'click' : function(e) {
-																e.preventDefault();
-																arrow('left');
-															}
-														}),
-														$.button('Derecha', 'blue', 'fa-arrow-right', {
-															'click' : function(e) {
-																e.preventDefault();
-																arrow('right');
-															}
-														})
+														}
 													]
 												}
 											]
@@ -253,6 +249,7 @@
 													'click' : function(e) {
 														e.preventDefault();
 														$this.dom('sheet').empty();
+														$this.dom('run-table').find('div.box').removeClass('current');
 													}
 												}),
 												$.button('Recargar reto', '', 'fa-refresh', {
@@ -260,6 +257,7 @@
 														e.preventDefault();
 														$this.dom('sheet').empty();
 														$this.repaint('run-table', board['append'], board['prepend']);
+														$this.dom('run-table').find('div.box').removeClass('current');
 													}
 												})
 											]
