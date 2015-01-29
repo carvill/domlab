@@ -96,8 +96,8 @@
 			]
 		};
 
-		$this.domlab(dom, {
-			'debug' : false
+		$.domlab(dom, {
+			'container' : $this
 		});
 
 		return this;
